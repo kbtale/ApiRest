@@ -169,6 +169,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         EloquentFilter\ServiceProvider::class, // To use EloquentFilter
+        Maatwebsite\Excel\ExcelServiceProvider::class, // MaatExcel
     ])->toArray(),
 
     /*
@@ -184,6 +185,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class, //MaatExcel
     ])->toArray(),
 
 ];
