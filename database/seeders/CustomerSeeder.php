@@ -14,13 +14,8 @@ class CustomerSeeder extends Seeder
      */
     public function run()
     {
-        if (Customer::count() === 0) {
-            Customer::create(
-                [
-                    'uuid' => Str::orderedUuid(),
-                    'name' => 'Walking Customer',
-                ]
-            );
-        }
+        Customer::factory()
+            ->count(33)
+            ->create();
     }
 }

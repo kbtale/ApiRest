@@ -18,24 +18,24 @@ class UserSeeder extends Seeder
         }
         User::create(
             [
-                'name' => 'Rose Finch',
-                'email' => 'admin@admin.com',
+                'name' => 'Carlos Bolívar',
+                'email' => 'carlosabolivart@gmail.com',
                 'password' => bcrypt(12345678),
                 'role_id' => 1,
             ]
         );
         User::create(
             [
-                'name' => 'Harry',
-                'email' => 'harry@app.com',
+                'name' => 'Mario',
+                'email' => 'mario@gmail.com',
                 'password' => bcrypt(12345678),
                 'role_id' => 2,
             ]
         );
         User::create(
             [
-                'name' => 'Jon doe',
-                'email' => 'chef@app.com',
+                'name' => 'Pedro',
+                'email' => 'chef@gmail.com',
                 'password' => bcrypt(12345678),
                 'role_id' => 3,
             ]

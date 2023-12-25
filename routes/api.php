@@ -28,7 +28,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 |   DELETE        /customers/{customer}     destroy users.destroy
 */
 
-Route::group(['prefix'=>'v1'], function(){
+Route::group(['prefix'=>'v1', 'namespace' => 'App\Http\Controllers'], function(){
     Route::apiResource('customers',CustomerController::class);
     Route::apiResource('expenses',ExpenseController::class);
     Route::apiResource('expense-types',ExpenseTypeController::class);
@@ -42,4 +42,4 @@ Route::group(['prefix'=>'v1'], function(){
     Route::apiResource('service-tables',ServiceTableController::class);
     Route::apiResource('settings',SettingController::class);
     Route::apiResource('user-roles',UserRoleController::class);
-})
+});

@@ -40,7 +40,7 @@ class UserRoleSeeder extends Seeder
         );
         UserRole::create(
             [
-                'name' => 'Biller',
+                'name' => 'Cashier',
                 'permissions' => ['pos_portal', 'order_checkout'],
             ]
         );

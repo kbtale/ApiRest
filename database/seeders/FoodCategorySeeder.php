@@ -15,28 +15,28 @@ class FoodCategorySeeder extends Seeder
         if (FoodCategory::count() === 0) {
             FoodCategory::create(
                 [
-                    'name' => 'Chineses',
+                    'name' => 'Italiana',
                 ]
             );
             FoodCategory::create(
                 [
-                    'name' => 'Burgers',
+                    'name' => 'FastFood',
                 ]
             );
 
             FoodCategory::create(
                 [
-                    'name' => 'Fries',
+                    'name' => 'China',
                 ]
             );
             FoodCategory::create(
                 [
-                    'name' => 'Pizza',
+                    'name' => 'Venezolana',
                 ]
             );
             FoodCategory::create(
                 [
-                    'name' => 'Cofees',
+                    'name' => 'Bebidas',
                 ]
             );
         }

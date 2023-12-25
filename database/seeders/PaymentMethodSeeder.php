@@ -15,12 +15,32 @@ class PaymentMethodSeeder extends Seeder
         if (PaymentMethod::count() === 0) {
             PaymentMethod::create(
                 [
-                    'title' => 'Cash',
+                    'title' => 'Efectivo USD',
                 ]
             );
             PaymentMethod::create(
                 [
-                    'title' => 'Card proccessing',
+                    'title' => 'Efectivo BS',
+                ]
+            );
+            PaymentMethod::create(
+                [
+                    'title' => 'Tarjeta',
+                ]
+            );
+            PaymentMethod::create(
+                [
+                    'title' => 'Pago Móvil',
+                ]
+            );
+            PaymentMethod::create(
+                [
+                    'title' => 'Zelle',
+                ]
+            );
+            PaymentMethod::create(
+                [
+                    'title' => 'PayPal',
                 ]
             );
         }

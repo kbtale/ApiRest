@@ -15,7 +15,7 @@ class IngredientSeeder extends Seeder
         if (Ingredient::count() === 0) {
             Ingredient::create(
                 [
-                    'name' => 'Egg',
+                    'name' => 'Huevo',
                     'price' => 2,
                     'cost' => 1,
                     'quantity' => 200,
@@ -25,7 +25,7 @@ class IngredientSeeder extends Seeder
             );
             Ingredient::create(
                 [
-                    'name' => 'Milk',
+                    'name' => 'Leche',
                     'price' => 3,
                     'cost' => 2,
                     'quantity' => 500,
@@ -36,7 +36,7 @@ class IngredientSeeder extends Seeder
 
             Ingredient::create(
                 [
-                    'name' => 'Meat',
+                    'name' => 'Carne',
                     'price' => 4,
                     'cost' => 3,
                     'quantity' => 1000,
@@ -46,7 +46,7 @@ class IngredientSeeder extends Seeder
             );
             Ingredient::create(
                 [
-                    'name' => 'Chicken',
+                    'name' => 'Pollo',
                     'price' => 3,
                     'cost' => 2,
                     'quantity' => 1000,
@@ -56,7 +56,7 @@ class IngredientSeeder extends Seeder
             );
             Ingredient::create(
                 [
-                    'name' => 'Oninon',
+                    'name' => 'Cebolla',
                     'price' => 2,
                     'cost' => 1,
                     'quantity' => 1000,
@@ -66,7 +66,7 @@ class IngredientSeeder extends Seeder
             );
             Ingredient::create(
                 [
-                    'name' => 'Potato',
+                    'name' => 'Papas',
                     'price' => 2,
                     'cost' => 1,
                     'quantity' => 10000,
@@ -76,7 +76,7 @@ class IngredientSeeder extends Seeder
             );
             Ingredient::create(
                 [
-                    'name' => 'Bread',
+                    'name' => 'Pan',
                     'price' => 1,
                     'cost' => 1,
                     'quantity' => 5000,
@@ -86,7 +86,7 @@ class IngredientSeeder extends Seeder
             );
             Ingredient::create(
                 [
-                    'name' => 'Katchup',
+                    'name' => 'Ketchup',
                     'price' => 1,
                     'cost' => 1,
                     'quantity' => 7000,
