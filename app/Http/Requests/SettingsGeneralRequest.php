@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SettingCurrencyRequest extends FormRequest
+class SettingsGeneralRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,11 @@ class SettingCurrencyRequest extends FormRequest
     public function rules()
     {
         return [
-            'currency_symbol' => 'required|max:10',
-            'currency_symbol_on_left' => 'required|boolean',
+            'app_url' => 'required|url|max:255',
+            'app_name' => 'required|max:255',
+            'app_https' => 'nullable|boolean',
+            'app_address' => 'nullable|max:255',
+            'app_phone' => 'nullable|max:255',
         ];
     }
 }

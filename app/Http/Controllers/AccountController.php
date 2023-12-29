@@ -21,8 +21,8 @@ class AccountController extends ApiController
      */
     public function __construct()
     {
-        $this->middleware('auth:sanctum');
-        $this->middleware('demo');
+        //$this->middleware('auth:sanctum');
+        //$this->middleware('demo');
     }
 
     /**

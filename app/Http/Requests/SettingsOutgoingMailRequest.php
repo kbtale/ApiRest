@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SettingOutgoingMailRequest extends FormRequest
+class SettingsOutgoingMailRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

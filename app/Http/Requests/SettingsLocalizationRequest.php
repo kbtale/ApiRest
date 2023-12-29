@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SettingAppearanceRequest extends FormRequest
+class SettingsLocalizationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,11 @@ class SettingAppearanceRequest extends FormRequest
     public function rules()
     {
         return [
-            'icon' => 'image|max:1000|dimensions:ratio=1/1',
-            'background' => 'image|max:2000',
+            'app_timezone' => 'required|max:255',
+            'app_locale' => 'required|exists:languages,locale|max:255',
+            'app_date_locale' => 'required|max:255',
+            'app_date_format' => 'required|max:255',
+            'app_direction' => 'required|max:255',
         ];
     }
 }

@@ -40,6 +40,6 @@ Route::group(['prefix'=>'v1', 'namespace' => 'App\Http\Controllers'], function()
     Route::apiResource('payment-methods',PaymentMethodController::class);
     Route::apiResource('sales',SaleController::class);
     Route::apiResource('service-tables',ServiceTableController::class);
-    Route::apiResource('settings',SettingController::class);
+    Route::apiResource('settings',SettingsController::class);
     Route::apiResource('user-roles',UserRoleController::class);
 });

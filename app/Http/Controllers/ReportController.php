@@ -19,7 +19,7 @@ class ReportController extends ApiController
      */
     public function __construct()
     {
-        $this->middleware('auth:sanctum');
+        //$this->middleware('auth:sanctum');
     }
 
     public function tax(Request $request): JsonResponse

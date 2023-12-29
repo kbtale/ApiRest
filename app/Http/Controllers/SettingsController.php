@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Setting;
+use App\Models\Settings;
 use App\Http\Requests\StoreSettingRequest;
 use App\Http\Requests\UpdateSettingRequest;
 
-class SettingController extends Controller
+class SettingsController extends Controller
 {
     /**
      * Display a listing of the resource.

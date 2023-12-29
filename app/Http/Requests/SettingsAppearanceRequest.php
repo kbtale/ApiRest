@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SettingTaxRequest extends FormRequest
+class SettingsAppearanceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,8 @@ class SettingTaxRequest extends FormRequest
     public function rules()
     {
         return [
-            'tax_rate' => 'required|numeric',
-            'is_tax_included' => 'boolean',
-            'is_tax_fix' => 'boolean',
-            'tax_id' => 'sometimes',
-            'is_vat' => 'required',
+            'icon' => 'image|max:1000|dimensions:ratio=1/1',
+            'background' => 'image|max:2000',
         ];
     }
 }

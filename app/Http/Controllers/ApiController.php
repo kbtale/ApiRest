@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sale;
-use App\Models\Setting;
+use App\Models\Settings;
 use App\Models\User;
 use Carbon\Carbon;
 use dacoto\EnvSet\Facades\EnvSet;
@@ -19,7 +19,7 @@ class ApiController extends Controller
      */
     protected function master(): object
     {
-        return Setting::find(1);
+        return Settings::find(1);
     }
 
     /**

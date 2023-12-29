@@ -14,7 +14,7 @@ class InvoicePrintController extends ApiController
      */
     public function __construct()
     {
-        $this->middleware('auth:sanctum')->only('reportCard');
+        //$this->middleware('auth:sanctum')->only('reportCard');
     }
 
     /**

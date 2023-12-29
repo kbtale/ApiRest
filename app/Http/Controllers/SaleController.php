@@ -2,65 +2,103 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Sale;
-use App\Http\Requests\StoreSaleRequest;
-use App\Http\Requests\UpdateSaleRequest;
+use App\Http\Controllers\ApiController;
+use App\Http\Requests\ServiceTableStoreRequest;
+use App\Http\Requests\ServiceTableUpdateRequest;
+use App\Http\Resources\ServiceTableResource;
+use App\Models\ServiceTable;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
-class SaleController extends Controller
+class ServiceTableController extends ApiController
 {
+
     /**
-     * Display a listing of the resource.
+     * Construct middleware and initiated backups list
      */
-    public function index()
+    public function __construct()
     {
-        //
+        //$this->middleware('auth:sanctum');
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the resource.
+     *
+     * @param      \Illuminate\Http\Request  $request  The request
+     *
+     * @return     JsonResponse              The json response.
      */
-    public function create()
+    public function index(Request $request): JsonResponse
     {
-        //
+        $tables = ServiceTable::latest()->get();
+        return response()->json(ServiceTableResource::collection($tables));
     }
 
     /**
      * Store a newly created resource in storage.
+     *
+     * @param      \App\Http\Requests\ServiceTableStoreRequest  $request  The request
+     *
+     * @return     JsonResponse                                 The json response.
      */
-    public function store(StoreSaleRequest $request)
+    public function store(ServiceTableStoreRequest $request): JsonResponse
     {
-        //
+        $serviceTable = ServiceTable::create($request->validated());
+        return response()->json([
+            'message' => __('Data saved successfully'),
+            'table' => $serviceTable->id,
+        ]);
     }
 
     /**
      * Display the specified resource.
+     *
+     * @param      \App\Models\ServiceTable  $serviceTable  The service table
+     *
+     * @return     JsonResponse              The json response.
      */
-    public function show(Sale $sale)
+    public function show(ServiceTable $serviceTable): JsonResponse
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Sale $sale)
-    {
-        //
+        return response()->json(new ServiceTableResource($serviceTable));
     }
 
     /**
      * Update the specified resource in storage.
+     *
+     * @param      \App\Http\Requests\ServiceTableUpdateRequest  $request       The request
+     * @param      \App\Models\ServiceTable                      $serviceTable  The service table
+     *
+     * @return     JsonResponse                                  The json response.
      */
-    public function update(UpdateSaleRequest $request, Sale $sale)
+    public function update(ServiceTableUpdateRequest $request, ServiceTable $serviceTable): JsonResponse
     {
-        //
+        $serviceTable->update($request->validated());
+        return response()->json([
+            'message' => __('Data updated successfully'),
+        ]);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Destroys the given service table.
+     *
+     * @param      \App\Models\ServiceTable  $serviceTable  The service table
+     *
+     * @return     JsonResponse              The json response.
      */
-    public function destroy(Sale $sale)
+    public function destroy(ServiceTable $serviceTable): JsonResponse
     {
-        //
+        $serviceTable->delete();
+        return response()->json(['message' => __('Data removed successfully')]);
     }
+
+    /**
+     * Service tables list for certain forms
+     *
+     * @return     JsonResponse  The json response.
+     */
+    public function serviceTables(): JsonResponse
+    {
+        return response()->json(ServiceTableResource::collection(ServiceTable::get()));
+    }
+
 }

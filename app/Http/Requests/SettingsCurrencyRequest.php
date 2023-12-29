@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SettingCaptchaRequest extends FormRequest
+class SettingsCurrencyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,8 @@ class SettingCaptchaRequest extends FormRequest
     public function rules()
     {
         return [
-            'recaptcha_enabled' => 'required|boolean',
-            'recaptcha_public' => 'required_if:recaptcha_enabled,true',
-            'recaptcha_private' => 'required_if:recaptcha_enabled,true',
+            'currency_symbol' => 'required|max:10',
+            'currency_symbol_on_left' => 'required|boolean',
         ];
     }
 }

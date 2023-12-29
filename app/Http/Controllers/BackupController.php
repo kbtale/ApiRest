@@ -22,8 +22,8 @@ class BackupController extends ApiController
      */
     public function __construct()
     {
-        $this->middleware(['auth:sanctum']);
-        $this->middleware('demo')->only(['restore', 'destroy']);
+        //$this->middleware(['auth:sanctum']);
+        //$this->middleware('demo')->only(['restore', 'destroy']);
         $this->backups = glob(storage_path() . '/backups/*.sql');
     }
 

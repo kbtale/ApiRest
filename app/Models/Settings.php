@@ -6,7 +6,7 @@ use dacoto\EnvSet\Facades\EnvSet;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
-class Setting extends Model
+class Settings extends Model
 {
     protected $fillable = [
         'app_name',

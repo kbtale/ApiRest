@@ -2,65 +2,98 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\ApiController;
+use App\Http\Requests\Media\StoreFileRequest;
+use App\Http\Requests\Media\StoreImageRequest;
+use App\Http\Resources\Media\FileResource;
 use App\Models\Media;
-use App\Http\Requests\StoreMediaRequest;
-use App\Http\Requests\UpdateMediaRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class MediaController extends Controller
+class MediaController extends ApiController
 {
+
     /**
-     * Display a listing of the resource.
+     * Media saving process
+     *
+     * @param StoreImageRequest $request request
+     *
+     * @return JsonResponse
      */
-    public function index()
+    public function store(StoreImageRequest $request): JsonResponse
     {
-        //
+        $image = $request->file('file');
+        $extension = Str::lower($image->getClientOriginalExtension());
+        $file = Media::create(
+            [
+                'uuid' => Str::uuid(),
+                'name' => $image->getClientOriginalName(),
+                'size' => $image->getSize(),
+                'mime' => $image->getMimeType(),
+                'extension' => $extension,
+                'disk' => 'public',
+                'path' => date('Y') . '/' . date('m'),
+                'server_name' => bcrypt($image->getRealPath()) . '.' . $extension,
+                'user_id' => Auth::id(),
+            ]
+        );
+        if ($file && $image->storeAs($file->path, $file->server_name, $file->disk)) {
+            return response()->json(new FileResource($file));
+        }
+        return response()->json(
+            ['message' => __('Something went wrong try again !')],
+            500
+        );
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display specific media file
+     *
+     * @param Media $media file
+     *
+     * @return JsonResponse
      */
-    public function create()
+    public function show(Media $media): JsonResponse
     {
-        //
+        return response()->json(new FileResource($media));
+    }
+
+    public function uploadAttachment(StoreFileRequest $request): JsonResponse
+    {
+        $request->validated();
+        $attachment = $request->file('file');
+        $file = new Media();
+        $file->uuid = Str::uuid();
+        $file->name = $attachment->getClientOriginalName();
+        $file->size = $attachment->getSize();
+        $file->mime = $attachment->getMimeType();
+        $file->extension = Str::lower($attachment->getClientOriginalExtension());
+        $file->disk = 'private';
+        $file->path = 'attachments/' . date('Y') . '/' . date('m');
+        $file->server_name = md5($attachment->getRealPath());
+        $file->user_id = Auth::id();
+        if ($attachment->storeAs($file->path, $file->server_name, $file->disk) && $file->save()) {
+            return response()->json(new FileResource($file));
+        }
+        return response()->json(['message' => __('An error occurred while saving data')], 500);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @param  string  $uuid
+     * @param  Request $request
+     * @return StreamedResponse
+     * @throws Exception
      */
-    public function store(StoreMediaRequest $request)
+    public function download(string $uuid, Request $request): StreamedResponse
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Media $media)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Media $media)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateMediaRequest $request, Media $media)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Media $media)
-    {
-        //
+        $file = Media::where('uuid', $uuid)->firstOrFail();
+        if (!Storage::disk($file->disk)->exists($file->path . DIRECTORY_SEPARATOR . $file->server_name)) {
+            abort(404);
+        }
+        return Storage::disk($file->disk)->download($file->path . DIRECTORY_SEPARATOR . $file->server_name, $file->name);
     }
 }

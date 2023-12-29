@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Api\SettingController;
-use App\Http\Requests\SettingAuthenticationRequest;
-use App\Http\Requests\SettingCaptchaRequest;
-use App\Http\Requests\SettingCurrencyRequest;
-use App\Http\Requests\SettingOutgoingMailRequest;
-use App\Http\Requests\SettingTaxRequest;
+use App\Http\Controllers\Api\SettingsController;
+use App\Http\Requests\SettingsAuthenticationRequest;
+use App\Http\Requests\SettingsCaptchaRequest;
+use App\Http\Requests\SettingsCurrencyRequest;
+use App\Http\Requests\SettingsOutgoingMailRequest;
+use App\Http\Requests\SettingsTaxRequest;
 use Illuminate\Http\JsonResponse;
 
-class SettingAxillaryController extends SettingController
+class AuxSettingsController extends SettingsController
 {
 
     /**
@@ -52,11 +52,11 @@ class SettingAxillaryController extends SettingController
     /**
      * Sets the authentication.
      *
-     * @param \App\Http\Requests\SettingAuthenticationRequest $request The request
+     * @param \App\Http\Requests\SettingsAuthenticationRequest $request The request
      *
      * @return JsonResponse                                     The json response.
      */
-    public function setAuthentication(SettingAuthenticationRequest $request): JsonResponse
+    public function setAuthentication(SettingsAuthenticationRequest $request): JsonResponse
     {
         $this->settings->update($request->validated());
         return response()->json(
@@ -97,11 +97,11 @@ class SettingAxillaryController extends SettingController
     /**
      * Sets the outgoing mail.
      *
-     * @param \App\Http\Requests\SettingOutgoingMailRequest $outgoingMail The outgoing mail
+     * @param \App\Http\Requests\SettingsOutgoingMailRequest $outgoingMail The outgoing mail
      *
      * @return JsonResponse                                   The json response.
      */
-    public function setOutgoingMail(SettingOutgoingMailRequest $outgoingMail): JsonResponse
+    public function setOutgoingMail(SettingsOutgoingMailRequest $outgoingMail): JsonResponse
     {
         $this->settings->update($outgoingMail->validated());
         return response()->json(
@@ -128,11 +128,11 @@ class SettingAxillaryController extends SettingController
     /**
      * Sets the captcha.
      *
-     * @param \App\Http\Requests\SettingCaptchaRequest $captcha The captcha
+     * @param \App\Http\Requests\SettingsCaptchaRequest $captcha The captcha
      *
      * @return JsonResponse                              The json response.
      */
-    public function setCaptcha(SettingCaptchaRequest $captcha): JsonResponse
+    public function setCaptcha(SettingsCaptchaRequest $captcha): JsonResponse
     {
         $this->settings->update($captcha->validated());
         return response()->json(
@@ -159,11 +159,11 @@ class SettingAxillaryController extends SettingController
     /**
      * Sets the tax.
      *
-     * @param      \App\Http\Requests\SettingTaxRequest  $tax    The tax
+     * @param      \App\Http\Requests\SettingsTaxRequest  $tax    The tax
      *
      * @return     JsonResponse                          The json response.
      */
-    public function setTax(SettingTaxRequest $tax): JsonResponse
+    public function setTax(SettingsTaxRequest $tax): JsonResponse
     {
         $this->settings->update($tax->validated());
         return response()->json(
@@ -190,11 +190,11 @@ class SettingAxillaryController extends SettingController
     /**
      * Sets the currency.
      *
-     * @param      \App\Http\Requests\SettingCurrencyRequest  $currency  The currency
+     * @param      \App\Http\Requests\SettingsCurrencyRequest  $currency  The currency
      *
      * @return     JsonResponse                               The json response.
      */
-    public function setCurrency(SettingCurrencyRequest $currency): JsonResponse
+    public function setCurrency(SettingsCurrencyRequest $currency): JsonResponse
     {
         $this->settings->update($currency->validated());
         return response()->json(

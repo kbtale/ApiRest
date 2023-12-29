@@ -1,10 +1,10 @@
 <?php
 namespace Database\Seeders;
 
-use App\Models\Setting;
+use App\Models\Settings;
 use Illuminate\Database\Seeder;
 
-class SettingSeeder extends Seeder
+class SettingsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,10 +13,10 @@ class SettingSeeder extends Seeder
      */
     public function run()
     {
-        if (Setting::count() !== 0) {
+        if (Settings::count() !== 0) {
             return;
         }
-        Setting::create(
+        Settings::create(
             [
                 'app_name' => 'Restaurant POS',
                 'app_https' => false,

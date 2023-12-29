@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SettingGeneralRequest extends FormRequest
+class SettingsCaptchaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,9 @@ class SettingGeneralRequest extends FormRequest
     public function rules()
     {
         return [
-            'app_url' => 'required|url|max:255',
-            'app_name' => 'required|max:255',
-            'app_https' => 'nullable|boolean',
-            'app_address' => 'nullable|max:255',
-            'app_phone' => 'nullable|max:255',
+            'recaptcha_enabled' => 'required|boolean',
+            'recaptcha_public' => 'required_if:recaptcha_enabled,true',
+            'recaptcha_private' => 'required_if:recaptcha_enabled,true',
         ];
     }
 }

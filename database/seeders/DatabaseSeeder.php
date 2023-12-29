@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
             UserRoleSeeder::class,
             UserSeeder::class,
             LanguageSeeder::class,
-            SettingSeeder::class,
+            SettingsSeeder::class,
             CustomerSeeder::class,
             ServiceTableSeeder::class,
             FoodCategorySeeder::class,
