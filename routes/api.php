@@ -41,5 +41,28 @@ Route::group(['prefix'=>'v1', 'namespace' => 'App\Http\Controllers'], function()
     Route::apiResource('sales',SaleController::class);
     Route::apiResource('service-tables',ServiceTableController::class);
     Route::apiResource('settings',SettingsController::class);
+    Route::apiResource('users',UserController::class);
     Route::apiResource('user-roles',UserRoleController::class);
+
+    Route::group(["prefix" => "files"], function () {
+        Route::get("/{file}", [MediaController::class, 'show']);
+        Route::post('save', [MediaController::class, 'store']);
+        Route::get("download/{uuid}", [MediaController::class, 'download']);
+        Route::post('attachments', [MediaController::class, 'uploadAttachment']);
+    });
+
+    Route::group(['prefix' => 'pos'], function () {
+        Route::get('sale/{sale}', [InvoicePrintController::class, 'sale']);
+        Route::get('categories', [PosController::class, 'categories']);
+        Route::get('payment-methods', [PosController::class, 'paymentMethods']);
+        Route::get('avl-service-tables', [PosController::class, 'serviceTables']);
+        Route::get('products', [PosController::class, 'products']);
+        Route::get('modifiers', [PosController::class, 'modifiers']);
+        Route::get('kitchen-orders', [PosController::class, 'kitchenOrders']);
+        Route::post('order-progress/{sale}', [PosController::class, 'orderProgressUpdate']);
+        Route::get('customers', [PosController::class, 'customers']);
+        Route::post('checkout/{sale}', [PosController::class, 'checkout']);
+        Route::post('submited-sale', [PosController::class, 'submitedOrder']);
+        Route::get('get-submitted-orders', [PosController::class, 'submiitedOrders']);
+    });
 });

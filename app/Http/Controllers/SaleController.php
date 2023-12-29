@@ -3,102 +3,142 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\ServiceTableStoreRequest;
-use App\Http\Requests\ServiceTableUpdateRequest;
-use App\Http\Resources\ServiceTableResource;
+use App\Http\Requests\SaleStoreRequest;
+use App\Http\Requests\SaleUpdateRequest;
+use App\Http\Resources\PosServiceTableResource;
+use App\Http\Resources\PosStaffResource;
+use App\Http\Resources\SaleDetailResource;
+use App\Http\Resources\SaleResource;
+use App\Models\Sale;
 use App\Models\ServiceTable;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
-class ServiceTableController extends ApiController
+class SaleController extends ApiController
 {
-
     /**
-     * Construct middleware and initiated backups list
+     * Construct middleware
      */
     public function __construct()
     {
         //$this->middleware('auth:sanctum');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @param      \Illuminate\Http\Request  $request  The request
-     *
-     * @return     JsonResponse              The json response.
-     */
     public function index(Request $request): JsonResponse
     {
-        $tables = ServiceTable::latest()->get();
-        return response()->json(ServiceTableResource::collection($tables));
+        $sort = $this->sort($request);
+        $sales = Sale::filter($request->all())
+            ->orderBy($sort['column'], $sort['order'])
+            ->paginate((int) $request->get('perPage', 10));
+
+        return response()->json(
+            [
+                'items' => SaleResource::collection($sales->items()),
+                'pagination' => $this->pagination($sales),
+            ]
+        );
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param      \App\Http\Requests\ServiceTableStoreRequest  $request  The request
-     *
-     * @return     JsonResponse                                 The json response.
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
-    public function store(ServiceTableStoreRequest $request): JsonResponse
+    public function store(SaleStoreRequest $request)
     {
-        $serviceTable = ServiceTable::create($request->validated());
+        $validated = $request->validated();
+        $validated['order_taker_id'] = auth()->user()->id;
+        $validated['took_at'] = $this->getCurrentTimpstamp();
+        $validated['uuid'] = Str::orderedUuid();
+        $validated['tracking'] = $this->getTrackingIdentity();
+        if ('dining' == $validated['order_type'] && $this->checkTableIsServing($validated)) {
+            return response()->json([
+                'message' => __('Attention! Table is being served'),
+            ], 422);
+        }
+        $sale = Sale::create($validated);
+        $sale->serviceTable()->update(['is_booked' => true]);
         return response()->json([
-            'message' => __('Data saved successfully'),
-            'table' => $serviceTable->id,
+            'message' => __('Order created successfully'),
+            'order' => $sale->uuid,
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param      \App\Models\ServiceTable  $serviceTable  The service table
+     * @param      \App\Models\Sale  $sale   The sale
      *
-     * @return     JsonResponse              The json response.
+     * @return     JsonResponse      The json response.
      */
-    public function show(ServiceTable $serviceTable): JsonResponse
+    public function show(Sale $sale): JsonResponse
     {
-        return response()->json(new ServiceTableResource($serviceTable));
+        return response()->json(new SaleDetailResource($sale));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param      \App\Http\Requests\ServiceTableUpdateRequest  $request       The request
-     * @param      \App\Models\ServiceTable                      $serviceTable  The service table
-     *
-     * @return     JsonResponse                                  The json response.
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Sale  $sale
+     * @return \Illuminate\Http\Response
      */
-    public function update(ServiceTableUpdateRequest $request, ServiceTable $serviceTable): JsonResponse
+    public function update(SaleUpdateRequest $request, Sale $sale)
     {
-        $serviceTable->update($request->validated());
+
+        $validated = $request->validated();
+        $validated['chef'] = null;
+        $validated['prepared_at'] = null;
+        if ('dining' == $validated['order_type'] && $validated['table_id'] !== $sale->serviceTable->id && $this->checkTableIsServing($validated)) {
+            return response()->json([
+                'message' => __('Attention! Table is being served'),
+            ], 422);
+        }
+        $sale->serviceTable()->update(['is_booked' => false]);
+        $sale->update($validated);
+        $sale->serviceTable()->update(['is_booked' => true]);
         return response()->json([
-            'message' => __('Data updated successfully'),
+            'message' => __('Order updated successfully'),
         ]);
     }
 
     /**
-     * Destroys the given service table.
+     * Remove the specified resource from storage.
      *
-     * @param      \App\Models\ServiceTable  $serviceTable  The service table
-     *
-     * @return     JsonResponse              The json response.
+     * @param  \App\Models\Sale  $sale
+     * @return \Illuminate\Http\Response
      */
-    public function destroy(ServiceTable $serviceTable): JsonResponse
+    public function destroy(Sale $sale): JsonResponse
     {
-        $serviceTable->delete();
+        if (!\Auth::user()->userRole->checkPermission('remove_sales')) {
+            return response()->json([
+                'message' => __('You have not permission to perform this request'),
+            ], 403);
+        }
+        if ('dining' === $sale->order_type) {
+            $sale->serviceTable()->update(['is_booked' => false]);
+        }
+        $sale->delete();
         return response()->json(['message' => __('Data removed successfully')]);
     }
 
-    /**
-     * Service tables list for certain forms
-     *
-     * @return     JsonResponse  The json response.
-     */
-    public function serviceTables(): JsonResponse
+    public function checkTableIsServing($validated): Bool
     {
-        return response()->json(ServiceTableResource::collection(ServiceTable::get()));
+        $table = ServiceTable::where('is_booked', true)->where('id', $validated['table_id'])->first();
+        return $table ? true : false;
     }
 
+    public function filters(): JsonResponse
+    {
+        $users = User::get();
+        return response()->json([
+            'tables' => PosServiceTableResource::collection(ServiceTable::get()),
+            'billers' => PosStaffResource::collection($this->getBillers()),
+            'takers' => PosStaffResource::collection($this->getOrderTakers()),
+            'chefs' => PosStaffResource::collection($this->getChefs()),
+        ]);
+    }
 }

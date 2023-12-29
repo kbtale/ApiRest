@@ -18,17 +18,7 @@ class AuxSettingsController extends SettingsController
      */
     public function __construct()
     {
-        $this->middleware('auth:sanctum');
-        $this->middleware('demo')->only(
-            [
-                'getAuthentication',
-                'setOutgoingMail',
-                'setLogging',
-                'setCaptcha',
-                'setCurrency',
-                'setTax',
-            ]
-        );
+        //$this->middleware('auth:sanctum');
         $this->settings = $this->master();
         $this->collection = collect($this->settings);
     }
