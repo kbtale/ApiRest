@@ -2,65 +2,119 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\ApiController;
+use App\Http\Requests\ExpenseStoreRequest;
+use App\Http\Requests\ExpenseUpdateRequest;
+use App\Http\Resources\ExpenseResource;
 use App\Models\Expense;
-use App\Http\Requests\StoreExpenseRequest;
-use App\Http\Requests\UpdateExpenseRequest;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
-class ExpenseController extends Controller
+class ExpenseController extends ApiController
 {
+
     /**
-     * Display a listing of the resource.
+     * Construct middleware and initiated backups list
      */
-    public function index()
+    public function __construct()
     {
-        //
+        $this->middleware('auth:sanctum');
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the resource.
+     *
+     * @param      \Illuminate\Http\Request  $request  The request
+     *
+     * @return     JsonResponse              The json response.
      */
-    public function create()
+    public function index(Request $request): JsonResponse
     {
-        //
+        $sort = $this->sort($request);
+        $expenses = Expense::filter($request->all())
+            ->orderBy($sort['column'], $sort['order'])
+            ->paginate((int) $request->get('perPage', 10));
+        return response()->json(
+            [
+                'items' => ExpenseResource::collection($expenses->items()),
+                'pagination' => $this->pagination($expenses),
+            ]
+        );
     }
 
     /**
      * Store a newly created resource in storage.
+     *
+     * @param      \App\Http\Requests\ExpenseStoreRequest  $request  The request
+     *
+     * @return     JsonResponse                                 The json response.
      */
-    public function store(StoreExpenseRequest $request)
+    public function store(ExpenseStoreRequest $request): JsonResponse
     {
-        //
+        $expense = Expense::create($request->validated());
+        return response()->json([
+            'message' => __('Data saved successfully'),
+            'expense' => $expense->id,
+        ]);
     }
 
     /**
      * Display the specified resource.
+     *
+     * @param      \App\Models\Expense  $expense  The service table
+     *
+     * @return     JsonResponse              The json response.
      */
-    public function show(Expense $expense)
+    public function show(Expense $expense): JsonResponse
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Expense $expense)
-    {
-        //
+        return response()->json(new ExpenseResource($expense));
     }
 
     /**
      * Update the specified resource in storage.
+     *
+     * @param      \App\Http\Requests\ExpenseUpdateRequest  $request       The request
+     * @param      \App\Models\Expense                      $expense  The service table
+     *
+     * @return     JsonResponse                                  The json response.
      */
-    public function update(UpdateExpenseRequest $request, Expense $expense)
+    public function update(ExpenseUpdateRequest $request, Expense $expense): JsonResponse
     {
-        //
+        $expense->update($request->validated());
+        return response()->json([
+            'message' => __('Data updated successfully'),
+        ]);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Destroys the given service table.
+     *
+     * @param      \App\Models\Expense  $expense  The service table
+     *
+     * @return     JsonResponse              The json response.
      */
-    public function destroy(Expense $expense)
+    public function destroy(Expense $expense): JsonResponse
     {
-        //
+        $expense->delete();
+        return response()->json(['message' => __('Data removed successfully')]);
     }
-}
+
+    /**
+     * Expenses types for certain forms
+     *
+     * @return     JsonResponse  The json response.
+     */
+    public function expenses(): JsonResponse
+    {
+        return response()->json(ExpenseResource::collection(Expense::get()));
+    }
+
+    public function destroyBatch(Request $request): JsonResponse
+    {
+        $items = Expense::whereIn('id', $request->rows)->get();
+        foreach ($items as $key => $item) {
+            $item->delete();
+        }
+        return response()->json(['message' => __('Data removed successfully')]);
+    }
+};

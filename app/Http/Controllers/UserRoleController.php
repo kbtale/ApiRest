@@ -2,18 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\ApiController;
+use App\Http\Requests\UserRoleStoreRequest;
+use App\Http\Requests\UserRoleUpdateRequest;
+use App\Http\Resources\UserRoleEditResource;
+use App\Http\Resources\UserRoleResource;
+use App\Models\User;
 use App\Models\UserRole;
-use App\Http\Requests\StoreUserRoleRequest;
-use App\Http\Requests\UpdateUserRoleRequest;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
-class UserRoleController extends Controller
+class UserRoleController extends ApiController
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): JsonResponse
     {
-        //
+        $sort = $this->sort($request);
+        $roles = UserRole::filter($request->all())
+            ->orderBy($sort['column'], $sort['order'])
+            ->paginate((int) $request->get('perPage', 10));
+
+        return response()->json(
+            [
+                'items' => UserRoleResource::collection($roles->items()),
+                'pagination' => $this->pagination($roles),
+            ]
+        );
     }
 
     /**

@@ -13,7 +13,16 @@ class ModifierController extends Controller
      */
     public function index()
     {
-        //
+        $sort = $this->sort($request);
+        $modifiers = Modifier::filter($request->all())
+            ->orderBy($sort['column'], $sort['order'])
+            ->paginate((int) $request->get('perPage', 10));
+        return response()->json(
+            [
+                'items' => ModifierResource::collection($modifiers->items()),
+                'pagination' => $this->pagination($modifiers),
+            ]
+        );
     }
 
     /**
