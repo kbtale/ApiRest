@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Api\SettingsController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Requests\SettingsAuthenticationRequest;
 use App\Http\Requests\SettingsCaptchaRequest;
 use App\Http\Requests\SettingsCurrencyRequest;
