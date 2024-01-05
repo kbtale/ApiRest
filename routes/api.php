@@ -16,6 +16,7 @@ use App\Http\Controllers\ImportExportController;
 use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\InvoicePrintController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\Locale\LocaleController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ModifierController;
 use App\Http\Controllers\PaymentMethodController;
@@ -82,6 +83,7 @@ Route::group(['prefix'=>'v1', 'namespace' => 'App\Http\Controllers'], function()
         Route::post('recover', [AuthController::class, 'recover'])->name('auth.recover');
         Route::post('reset', [AuthController::class, 'reset'])->name('auth.reset');
         Route::get("user", [AuthController::class, 'user'])->name('auth.user');
+        Route::post('check', [AuthController::class, 'check'])->name('auth.check');
     });
 
     Route::group(['prefix' => 'pos'], function () {
@@ -103,6 +105,12 @@ Route::group(['prefix'=>'v1', 'namespace' => 'App\Http\Controllers'], function()
         Route::post('password', [AccountController::class, 'password']);
     });
 
+    Route::group(["prefix" => "lang"], function () {
+        Route::get('/', [LocaleController::class, 'languageList'])->name('language.list');
+        Route::get('/{lang}', [LocaleController::class, 'get'])->name('language.get');
+        Route::post('/set-language', [LocaleController::class, 'set'])->name('set-locale');
+    });
+    
     Route::group(["prefix" => "admin"], function () {
         Route::get('dashboard-states', [DashboardController::class, 'states'])->name('dashboard-states');
         Route::get('dashboard-ghraphical', [DashboardController::class, 'annualGraph'])->name('dashboard-ag');
