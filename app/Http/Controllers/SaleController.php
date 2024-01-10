@@ -59,6 +59,11 @@ class SaleController extends ApiController
                 'message' => __('Attention! Table is being served'),
             ], 422);
         }
+        if ('dining' != $validated['order_type'] && $this->checkTableIsServing($validated)) {
+            return response()->json([
+                'message' => __('Choose a delivering method'),
+            ], 422);
+        }
         $sale = Sale::create($validated);
         $sale->serviceTable()->update(['is_booked' => true]);
         return response()->json([

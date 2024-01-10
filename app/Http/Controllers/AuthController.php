@@ -28,7 +28,7 @@ class AuthController extends ApiController
      */
     public function __construct()
     {
-        /*
+        
         $this->middleware(
             'register',
             ['only' => ['register']]
@@ -37,10 +37,12 @@ class AuthController extends ApiController
             'auth:sanctum',
             ['except' => ['login', 'register', 'recover', 'reset', 'verify']]
         );
+        /*
         $this->middleware(
             'demo',
             ['only' => ['recover', 'reset']]
         );
+        
         $this->middleware(
             'captcha',
             ['only' => ['login', 'register', 'recover', 'reset']]
@@ -223,6 +225,7 @@ class AuthController extends ApiController
      */
     public function user(): JsonResponse
     {
+        dd('Im here');
         return response()->json(new UserResource(auth()->user()));
     }
 

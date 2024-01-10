@@ -89,7 +89,7 @@ class PosController extends ApiController
         return response()->json(PosCustomerResource::collection($customers));
     }
 
-    public function submitedOrder(Request $request): JsonResponse
+    public function submittedOrder(Request $request): JsonResponse
     {
         $order = Sale::where('uuid', $request->uuid)->submittedOrder()->first();
         if ($order) {
@@ -100,7 +100,7 @@ class PosController extends ApiController
         ]);
     }
 
-    public function submiitedOrders(): JsonResponse
+    public function submittedOrders(): JsonResponse
     {
         $orders = Sale::latest()->submittedOrder()->get();
         return response()->json(PosSubmittedSaleOrderResource::collection($orders));
