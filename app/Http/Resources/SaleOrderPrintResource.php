@@ -34,7 +34,7 @@ class SaleOrderPrintResource extends JsonResource
             'progress' => $this->progress,
             'created_at' => $this->updated_at->format(config('app.app_date_format')),
             'updated_at' => $this->updated_at->format(config('app.app_date_format')),
-            'signature' => $this->getImage(),
+            'signature' => $this->getSignature(),
         ];
     }
 }

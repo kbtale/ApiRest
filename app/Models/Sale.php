@@ -88,12 +88,13 @@ class Sale extends Model
      *
      * @return string
      */
-    public function getImage(): string
+    public function getSignature(): string
     {
-        return $this->image
-        ? Storage::disk('public')->url($this->image)
-        : asset('images/default/product.png');
+        return $this->signature
+        ? Storage::disk('public')->url($this->signature)
+        : asset('images/default/signature.png');
     }
+
     /**
      * Customer info for current sale
      *
