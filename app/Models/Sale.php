@@ -92,7 +92,7 @@ class Sale extends Model
     public function getSignature(): string
     {
         return $this->signature
-        ? asset('storage/' . $this->signature)
+        ? asset($this->signature)
         : asset('images/default/signature.png');
     }
 
