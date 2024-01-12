@@ -58,6 +58,7 @@ Route::group(['prefix'=>'v1', 'namespace' => 'App\Http\Controllers'], function()
     Route::group(["prefix" => "files"], function () {
         Route::get("/{file}", [MediaController::class, 'show']);
         Route::post('save', [MediaController::class, 'store']);
+        Route::post('store-signature', [MediaController::class, 'storeSignature']);
         Route::get("download/{uuid}", [MediaController::class, 'download']);
         Route::post('attachments', [MediaController::class, 'uploadAttachment']);
     });

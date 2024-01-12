@@ -37,6 +37,7 @@ class SaleStoreRequest extends FormRequest
             'payment_note' => 'sometimes',
             'staff_note' => 'sometimes',
             'note_for_chef' => 'sometimes',
+            'signature' => 'required',
         ];
 
         if (request('order_type') === 'dining') {

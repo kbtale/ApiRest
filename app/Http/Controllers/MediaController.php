@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Media\StoreFileRequest;
 use App\Http\Requests\Media\StoreImageRequest;
+use App\Http\Requests\Media\StoreSignatureRequest;
 use App\Http\Resources\Media\FileResource;
 use App\Models\Media;
 use Illuminate\Support\Facades\Auth;
@@ -51,7 +52,34 @@ class MediaController extends ApiController
     }
 
     /**
-     * Display specific media file
+     * Signatures saving process
+     *
+     * @param StoreSignatureRequest $request request
+     *
+     * @return JsonResponse
+     */
+    public function storeSignature(StoreSignatureRequest $request): JsonResponse
+    {
+        $base64_image = $request->input('signature'); // the base64 encoded
+        [$type, $file_data] = explode(';', $base64_image);
+        [, $file_data] = explode(',', $file_data);
+        $file_data = base64_decode($file_data);
+    
+        $path = date('Y') . '/' . date('m');
+        $server_name = Str::random(10) . '.png'; // generate a random server name
+    
+        if (Storage::disk('public')->put($path . '/' . $server_name, $file_data)) {
+            return response()->json(['file_url' => Storage::url($path . '/' . $server_name)]);
+        }
+    
+        return response()->json(
+            ['message' => __('Something went wrong, try again !')],
+            500
+        );
+    }    
+
+    /**
+     * Display an specific media file
      *
      * @param Media $media file
      *

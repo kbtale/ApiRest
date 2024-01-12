@@ -35,6 +35,7 @@ class Sale extends Model
         'completed_at',
         'payment_note', 'progress',
         'staff_note', 'payment_method_id', 'note_for_chef',
+        'signature',
     ];
 
     /**

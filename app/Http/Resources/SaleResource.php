@@ -33,6 +33,7 @@ class SaleResource extends JsonResource
             'completed_at' => $this->completed_at,
             'created_at' => $this->updated_at->format(config('app.app_date_format')),
             'updated_at' => $this->updated_at->format(config('app.app_date_format')),
+            'signature' => $this->signature,
         ];
     }
 }

@@ -49,7 +49,7 @@ class CreateSalesTable extends Migration
             $table->text('payment_note')->nullable();
             $table->text('staff_note')->nullable();
             $table->integer('progress')->default(0);
-            $table->binary('signature');
+            $table->string('signature')->nullable();
 
             $table->foreignId('payment_method_id')->nullable()->constrained('payment_methods');
             $table->text('note_for_chef')->nullable();
