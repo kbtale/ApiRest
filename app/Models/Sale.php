@@ -84,7 +84,7 @@ class Sale extends Model
     }
 
     /**
-     * Get Signature url
+     * Get signature url
      *
      * @return string
      */
