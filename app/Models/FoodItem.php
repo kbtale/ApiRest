@@ -61,7 +61,7 @@ class FoodItem extends Model
     }
 
     /**
-     * User avatar url
+     * Get FoodItem Image
      *
      * @return string
      */

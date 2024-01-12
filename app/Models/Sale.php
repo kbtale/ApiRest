@@ -84,6 +84,17 @@ class Sale extends Model
     }
 
     /**
+     * Get Signature url
+     *
+     * @return string
+     */
+    public function getImage(): string
+    {
+        return $this->image
+        ? Storage::disk('public')->url($this->image)
+        : asset('images/default/product.png');
+    }
+    /**
      * Customer info for current sale
      *
      * @return     BelongsTo  The belongs to.
