@@ -111,6 +111,7 @@ Route::group(['prefix'=>'v1', 'namespace' => 'App\Http\Controllers'], function()
             Route::post('languages/sync', [LanguageController::class, 'sync'])->name('language.sync');
     
             Route::group(["prefix" => "settings"], function () {
+                Route::get('all', [SettingsController::class, 'getAll'])->name('settings.all');
                 Route::get('user-roles', [SettingsController::class, 'userRoles'])->name('settings.user-roles');
                 Route::get('languages', [SettingsController::class, 'languages'])->name('settings.languages');
                 Route::get('general', [SettingsController::class, 'getGeneral'])->name('settings.get.general');

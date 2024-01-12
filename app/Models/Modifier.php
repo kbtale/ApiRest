@@ -5,7 +5,7 @@ namespace App\Models;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Modifier extends Model
 {
@@ -18,3 +18,4 @@ class Modifier extends Model
         return $this->belongsToMany(Ingredient::class, 'ingredients_modifiers')->withPivot('quantity');
     }
 }
+

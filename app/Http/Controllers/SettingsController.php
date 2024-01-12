@@ -59,6 +59,16 @@ class SettingsController extends ApiController
     }
 
     /**
+     * Gets all settings.
+     *
+     * @return JsonResponse  All.
+     */
+    public function getAll(): JsonResponse
+    {
+        return response()->json($this->collection->toArray());
+    }
+
+    /**
      * Sets the general.
      *
      * @param \App\Http\Requests\SettingsGeneralRequest $general The general

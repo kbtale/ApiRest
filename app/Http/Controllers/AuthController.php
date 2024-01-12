@@ -246,6 +246,7 @@ class AuthController extends ApiController
                 [
                     'authorized' => $authorized,
                     'gate_pass' => $access,
+                    'user' => Auth::user(),
                 ],
                 401
             );
