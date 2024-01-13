@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Customer;
 
 class PosCheckoutRequest extends FormRequest
 {
@@ -23,7 +24,8 @@ class PosCheckoutRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
+            'customer_id' => 'required',
             'items' => 'required',
             'discount_rate' => 'required',
             'discount_amount' => 'required',
@@ -33,7 +35,16 @@ class PosCheckoutRequest extends FormRequest
             'payable_after_all' => 'required',
             'payment_note' => 'sometimes',
             'staff_note' => 'sometimes',
-            'payment_method_id' => 'required',
         ];
+    
+        // Retrieve the customer from the database using the id from the request
+        $customer = Customer::find($this->input('customer_id'));
+    
+        // If the customer is not a partner, add the payment_method_id rule
+        if ($customer && !$customer->partner) {
+            $rules['payment_method_id'] = 'required';
+        }
+    
+        return $rules;
     }
 }

@@ -128,7 +128,7 @@ class PosController extends ApiController
         $validated['biller_id'] = auth()->user()->id;
         if (!\Auth::user()->userRole->checkPermission('order_checkout')) {
             return response()->json([
-                'message' => __('You have not permit to perform this request'),
+                'message' => __('You have not permission to perform this request'),
             ], 403);
         }
         foreach ($sale->items as $item) {
