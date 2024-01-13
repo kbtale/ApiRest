@@ -38,8 +38,8 @@ class SaleDetailResource extends JsonResource
             'is_preparing' => $this->is_preparing,
             'progress' => $this->progress,
             'completed_at' => $this->completed_at,
-            'created_at' => $this->updated_at->format(config('app.app_date_format')),
-            'updated_at' => $this->updated_at->format(config('app.app_date_format')),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
             'signature' => $this->getSignature(),
         ];
     }

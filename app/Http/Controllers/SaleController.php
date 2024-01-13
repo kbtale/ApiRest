@@ -52,6 +52,8 @@ class SaleController extends ApiController
         $validated = $request->validated();
         $validated['order_taker_id'] = auth()->user()->id;
         $validated['took_at'] = $this->getCurrentTimpstamp();
+        $validated['created_at'] = $this->getCurrentTimpstamp();
+        $validated['updated_at'] = $this->getCurrentTimpstamp();
         $validated['uuid'] = Str::orderedUuid();
         $validated['tracking'] = $this->getTrackingIdentity();
         if ('dining' == $validated['order_type'] && $this->checkTableIsServing($validated)) {
@@ -93,16 +95,17 @@ class SaleController extends ApiController
      */
     public function update(SaleUpdateRequest $request, Sale $sale)
     {
-
         $validated = $request->validated();
         $validated['chef'] = null;
         $validated['prepared_at'] = null;
+
         if ('dining' == $validated['order_type'] && $validated['table_id'] !== $sale->serviceTable->id && $this->checkTableIsServing($validated)) {
             return response()->json([
                 'message' => __('Attention! Table is being served'),
             ], 422);
         }
         $sale->serviceTable()->update(['is_booked' => false]);
+        $validated['updated_at'] = $this->getCurrentTimpstamp();
         $sale->update($validated);
         $sale->serviceTable()->update(['is_booked' => true]);
         return response()->json([
