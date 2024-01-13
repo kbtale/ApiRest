@@ -23,6 +23,8 @@ class PosCustomerResource extends JsonResource
             'phone' => $this->phone,
             'created_at' => $this->created_at->format(config('app.app_date_format')),
             'updated_at' => $this->updated_at->format(config('app.app_date_format')),
+            'partner' => $this->partner,
+            'creditLimit' => $this->creditLimit,
         ];
     }
 }
