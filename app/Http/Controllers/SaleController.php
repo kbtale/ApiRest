@@ -40,6 +40,24 @@ class SaleController extends ApiController
             ]
         );
     }
+    
+    /**
+     * Display a listing of the credited checkouts of the customer.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getPendingCredit(Request $request): JsonResponse
+    {
+        $sort = $this->sort($request);
+        $sales = Sale::filter($request->all())
+            ->orderBy($sort['column'], $sort['order'])
+            ->get();
+        return response()->json(
+            [
+                'items' => SaleResource::collection($sales),
+            ]
+        );
+    }
 
     /**
      * Store a newly created resource in storage.

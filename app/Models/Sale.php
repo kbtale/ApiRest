@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use App\Models\Customer;
+use App\Models\PaymentMethod;
+use App\Models\serviceTable;
+use App\Models\User;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -82,6 +85,12 @@ class Sale extends Model
             ->whereNull('completed_at')
             ->whereNotNull('prepared_at')
             ->whereNotNull('chef_id');
+    }
+
+    public function scopeCreditCheckouts($query)
+    {
+        return $query->where('is_preparing', false)
+            ->whereNull('payment_method');
     }
 
     /**

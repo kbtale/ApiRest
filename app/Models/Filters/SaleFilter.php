@@ -81,6 +81,13 @@ class SaleFilter extends ModelFilter
         return $this->where('customer_id', '=', $customer);
     }
 
+    public function customerCredit($customer): SaleFilter
+    {
+        return $this->where('customer_id', '=', $customer)
+                     ->whereNull('payment_method')
+                     ->where('is_preparing', false);
+    }
+
     public function chef($chef): SaleFilter
     {
         return $this->where('chef_id', '=', $chef);
