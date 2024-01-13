@@ -87,6 +87,8 @@ Route::group(['prefix'=>'v1', 'namespace' => 'App\Http\Controllers'], function()
             Route::post('checkout/{sale}', [PosController::class, 'checkout']);
             Route::post('submitted-sale', [PosController::class, 'submittedOrder']);
             Route::get('get-submitted-orders', [PosController::class, 'submittedOrders']);
+            Route::get('get-credit-status', [PosController::class, 'getCreditStatus']);
+            Route::get('get-pending-credit', [SaleController::class, 'getPendingCredit']);
         });
         Route::group(["prefix" => "account"], function () {
             Route::post('update', [AccountController::class, 'update']);
