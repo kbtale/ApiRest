@@ -26,6 +26,7 @@ class CustomerFilter extends ModelFilter
         return $this->where('name', 'LIKE', '%' . $search . '%')
             ->orWhere('email', 'LIKE', '%' . $search . '%')
             ->orWhere('phone', 'LIKE', '%' . $search . '%')
-            ->orWhere('address', 'LIKE', '%' . $search . '%');
+            ->orWhere('address', 'LIKE', '%' . $search . '%')
+            ->orWhere('partner', 'LIKE', '%' . $search . '%');
     }
 }

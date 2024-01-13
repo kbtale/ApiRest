@@ -20,6 +20,8 @@ class CreateCustomersTable extends Migration
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->string('address')->nullable();
+            $table->boolean('partner');
+            $table->integer('creditLimit')->unsigned();
             $table->timestamps();
         });
     }

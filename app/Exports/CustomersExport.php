@@ -15,6 +15,8 @@ class CustomersExport implements FromCollection, WithHeadings
             'phone',
             'email',
             'address',
+            'partner',
+            'creditLimit',
         ];
     }
 

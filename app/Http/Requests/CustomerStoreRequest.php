@@ -28,6 +28,8 @@ class CustomerStoreRequest extends FormRequest
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable',
             'address' => 'nullable|max:255',
+            'partner' => 'required',
+            'creditLimit' => 'nullable',
         ];
     }
 }
