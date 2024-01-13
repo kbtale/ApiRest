@@ -123,10 +123,11 @@ class PosController extends ApiController
 
     public function getCreditStatus(Request $request): JsonResponse
     {
-        $creditGotten = Sale::where('customer_id', $request->customer_id)
+        $creditGotten = Sale::where('customer_id', $request->id)
                     ->whereNull('payment_method_id')
                     ->whereNotNull('completed_at')
                     ->sum('payable_after_all');
+        
         $customer = Customer::find($request->id);
 
         if ($customer->creditLimit == 0) {
