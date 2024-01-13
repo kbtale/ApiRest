@@ -89,7 +89,7 @@ class Sale extends Model
 
     public function scopeCreditCheckouts($query)
     {
-        return $query->where('is_preparing', false)
+        return $query->whereNotNull('completed_at')
             ->whereNull('payment_method');
     }
 

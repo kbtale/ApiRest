@@ -121,6 +121,24 @@ class PosController extends ApiController
         ]);
     }
 
+    public function getCreditStatus(Request $request): JsonResponse
+    {
+        $creditGotten = Sale::where('customer_id', $request->customer_id)
+                    ->whereNull('payment_method')
+                    ->whereNotNull('completed_at')
+                    ->sum('payable_after_all');
+        
+        $customer = Customer::find($customer_id);
+
+        if ($customer->creditLimit == 0) {
+            return ['status' => 0];
+        } elseif ($customer->creditLimit > $creditGotten) {
+            return ['status' => 1];
+        } else {
+            return ['status' => -1];
+        }
+    }
+
     public function checkout(PosCheckoutRequest $request, Sale $sale): JsonResponse
     {
         $validated = $request->validated();

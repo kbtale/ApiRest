@@ -85,7 +85,7 @@ class SaleFilter extends ModelFilter
     {
         return $this->where('customer_id', '=', $customer)
                      ->whereNull('payment_method')
-                     ->where('is_preparing', false);
+                     ->whereNotNull('completed_at');
     }
 
     public function chef($chef): SaleFilter
