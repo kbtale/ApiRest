@@ -48,10 +48,15 @@ class SaleController extends ApiController
      */
     public function getPendingCredit(Request $request): JsonResponse
     {
-        $sort = $this->sort($request);
-        $sales = Sale::filter($request->all())
-            ->orderBy($sort['column'], $sort['order'])
-            ->get();
+        $sales = Sale::where('customer_id', $request->customer_id)
+                    ->whereNull('payment_method_id')
+                    ->whereNotNull('completed_at')
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+        if ($sales->isEmpty()) {
+            return response()->json(['error' => 'No sales found for this customer'], 404);
+        }
         return response()->json(
             [
                 'items' => SaleResource::collection($sales),
