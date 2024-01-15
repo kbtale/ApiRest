@@ -225,7 +225,6 @@ class AuthController extends ApiController
      */
     public function user(): JsonResponse
     {
-        dd('Im here');
         return response()->json(new UserResource(auth()->user()));
     }
 

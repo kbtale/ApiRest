@@ -40,6 +40,22 @@ class AuxSettingsController extends SettingsController
     }
 
     /**
+     * Gets the resources for the authentication window.
+     *
+     * @return JsonResponse  The authentication.
+     */
+    public function getAuthWindowSettings(): JsonResponse
+    {
+        return response()->json(
+            $this->collection->only(
+                [
+                    'app_user_registration', 'app_default_role', 'app_name', 'app_icon'
+                ]
+            )
+        );
+    }
+
+    /**
      * Sets the authentication.
      *
      * @param \App\Http\Requests\SettingsAuthenticationRequest $request The request

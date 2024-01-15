@@ -54,6 +54,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 */
 
 Route::group(['prefix'=>'v1', 'namespace' => 'App\Http\Controllers'], function(){
+    Route::get('system-config', [ApiController::class, 'protection'])->name('system.config');
 
     Route::group(["prefix" => "files"], function () {
         Route::get("/{file}", [MediaController::class, 'show']);
@@ -65,15 +66,18 @@ Route::group(['prefix'=>'v1', 'namespace' => 'App\Http\Controllers'], function()
 
     Route::group(["prefix" => "auth"], function () {
         Route::post('login', [AuthController::class, 'login'])->name('auth.login');
-        Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
         Route::post('register', [AuthController::class, 'register'])->name('auth.register');
         Route::post('recover', [AuthController::class, 'recover'])->name('auth.recover');
         Route::post('reset', [AuthController::class, 'reset'])->name('auth.reset');
         Route::get("user", [AuthController::class, 'user'])->name('auth.user');
         Route::post('check', [AuthController::class, 'check'])->name('auth.check');
+        Route::get('authentication-settings', [AuxSettingsController::class, 'getAuthWindowSettings'])->name('settings.get.authsettings');
     });
 
     Route::middleware(['auth:sanctum'])->group( function (){
+        Route::group(["prefix" => "auth"], function () {
+            Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
+        });
         Route::group(['prefix' => 'pos'], function () {
             Route::get('sale/{sale}', [InvoicePrintController::class, 'sale']);
             Route::get('categories', [PosController::class, 'categories']);
