@@ -22,6 +22,7 @@ class Sale extends Model
         'cart_total_cost',
         'cart_total_items',
         'cart_total_price',
+        'total_paid',
         'items',
         'profit_after_all',
         'payable_after_all',

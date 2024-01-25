@@ -4,9 +4,20 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Console\Commands\CreateDatabase;
 
 class Kernel extends ConsoleKernel
 {
+    /**
+     * The Artisan commands the developer may require (me, lol).
+     *
+     * @var array
+     */
+    protected $commands = [
+        Commands\CreateDatabase::class,
+        Commands\RunMigration::class,
+    ];
+
     /**
      * Define the application's command schedule.
      */

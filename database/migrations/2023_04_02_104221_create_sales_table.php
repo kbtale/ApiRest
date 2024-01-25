@@ -25,6 +25,7 @@ class CreateSalesTable extends Migration
             $table->string('cart_total_items')->default(0);
             $table->float('cart_total_price')->default(0);
             $table->float('cart_total_cost')->default(0);
+            $table->float('total_paid')->default(0);
             $table->float('profit_after_all')->default(0);
             $table->float('payable_after_all')->default(0);
             $table->float('discount_rate')->default(0);

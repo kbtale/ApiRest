@@ -19,22 +19,22 @@ class ServiceTableSeeder extends Seeder
         }
         ServiceTable::create(
             [
-                'title' => 'Table one',
+                'title' => 'Mesa uno',
             ]
         );
         ServiceTable::create(
             [
-                'title' => 'Table two',
+                'title' => 'Mesa dos',
             ]
         );
         ServiceTable::create(
             [
-                'title' => 'Table three',
+                'title' => 'Mesa tres',
             ]
         );
         ServiceTable::create(
             [
-                'title' => 'Table four',
+                'title' => 'Mesa cuatro',
             ]
         );
     }

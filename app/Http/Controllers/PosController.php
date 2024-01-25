@@ -129,15 +129,15 @@ class PosController extends ApiController
                     ->sum('payable_after_all');
         
         $customer = Customer::find($request->id);
-
+    
         if ($customer->creditLimit == 0) {
-            return response()->json(['status' => 0]);
+            return response()->json(['status' => 0, 'creditGotten' => $creditGotten]);
         } elseif ($customer->creditLimit > $creditGotten) {
-            return response()->json(['status' => 1]);
+            return response()->json(['status' => 1, 'creditGotten' => $creditGotten]);
         } else {
-            return response()->json(['status' => -1]);
+            return response()->json(['status' => -1, 'creditGotten' => $creditGotten]);
         }
-    }
+    }    
 
     public function checkout(PosCheckoutRequest $request, Sale $sale): JsonResponse
     {
